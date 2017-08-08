@@ -92,6 +92,7 @@ class DefaultContactREST: ContactREST {
                     observer.on(.error(RxCocoaError.unknown))
                     return
                 }
+                // TODO: httpResponse.statusCode >= 200 <300
                 print(httpResponse)
                 print(data.count)
                 observer.on(.next(ContactResult(response: response, data: data, error: error)))
@@ -135,7 +136,7 @@ class DefaultContactREST: ContactREST {
     }
 
     private func PATCH(_ url: URL, body: String) -> Observable<Bool> {
-        return http(method: "PATCH", url: url).map({ (contactResult) -> Bool in
+        return http(method: "PATCH", url: url, body: body).map({ (contactResult) -> Bool in
             if contactResult.error == nil {
                 return true
             }

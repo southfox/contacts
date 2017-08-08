@@ -17,45 +17,45 @@ struct ContactCommandsViewModel {
 
     static func executeCommand(state: ContactCommandsViewModel, _ command: ContactCommand) -> ContactCommandsViewModel {
         switch command {
+        case .reloadContacts():
+            return ContactCommandsViewModel(contacts: state.contacts, placeholders: state.placeholders)
         case let .setContacts(contacts):
             return ContactCommandsViewModel(contacts: contacts, placeholders: state.placeholders)
         case let .setPlaceholders(placeholders):
             return ContactCommandsViewModel(contacts: state.contacts, placeholders: placeholders)
-        case let .moveContact(from, to):
+        case .insertContact(_):
             var all = [state.contacts, state.placeholders]
-            let contact = all[from.section][from.row]
-            all[from.section].remove(at: from.row)
-            all[to.section].insert(contact, at: to.row)
-            
+            if let contact = all[1].popLast() {
+                all[0].append(contact)
+            }
             return ContactCommandsViewModel(contacts: all[0], placeholders: all[1])
 
         case let .deleteContact(indexPath):
+            var all = [state.contacts, state.placeholders]
             let disposeBag = DisposeBag()
-            var all = state.contacts
-            let contact = all[indexPath.row]
+            let contact = all[indexPath.section][indexPath.row]
             DefaultContactREST.instance.deleteContact(id: contact.contact.id)
                 .retry(3)
                 .retryOnBecomesReachable(false, reachabilityService: Factory.instance.reachabilityService)
                 .subscribe({ (event) in
                     if event.element == true {
-                        var all = [state.contacts, state.placeholders]
-                        all[indexPath.section].remove(at: indexPath.row)
+                        // TODO: here!!!!
                     }
-                    _ = ContactCommandsViewModel(contacts: all, placeholders: state.placeholders)
-                    
+                    _ = ContactCommandsViewModel(contacts: all[0], placeholders: all[1])
                 })
                 .disposed(by: disposeBag)
-            return ContactCommandsViewModel(contacts: all, placeholders: state.placeholders)
+            all[indexPath.section].remove(at: indexPath.row)
+            return ContactCommandsViewModel(contacts: all[0], placeholders: all[1])
         }
-        
     }
 }
 
 enum ContactCommand {
     case setContacts(contacts: [ContactViewModel])
+    case reloadContacts()
     case setPlaceholders(placeholders: [ContactViewModel])
     case deleteContact(indexPath: IndexPath)
-    case moveContact(from: IndexPath, to: IndexPath)
+    case insertContact(indexPath: IndexPath)
 }
 
 class ContactMainViewController: UIViewController, UITableViewDelegate {
@@ -70,6 +70,7 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+        
     }
     
     override func viewDidLoad() {
@@ -95,6 +96,21 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
             .asDriver()
             .throttle(0.3)
             .distinctUntilChanged()
+            .asObservable()
+            .shareReplay(1)
+            .do(onNext: { [weak self] (string) in
+                self?.tableView.reloadData()
+            }, onError: { [weak self] (error) in
+                self?.tableView.reloadData()
+            }, onCompleted: { [weak self] in
+                self?.tableView.reloadData()
+            }, onSubscribe: { [weak self] in
+                self?.tableView.reloadData()
+            }, onSubscribed: { [weak self] in
+                self?.tableView.reloadData()
+            }, onDispose: { [weak self] in
+                self?.tableView.reloadData()
+            })
             .flatMapLatest { query in
                 REST.searchContacts(query)
                     .retry(3)
@@ -122,15 +138,7 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
         let initialLoadCommand = Observable.just(ContactCommand.setPlaceholders(placeholders: [contactViewModel])).concat(loadContacts)
             .observeOn(MainScheduler.instance)
 
-//        let initialLoadCommand = Observable.just(ContactCommand.setContacts(contacts: [contactViewModel]))
-//                .concat(loadContacts)
-//                .observeOn(MainScheduler.instance)
-
-
-//        let insertContactCommand = tableView.rx.itemInserted.map(ContactCommand.insertContact)
-        let moveContactCommand = tableView
-            .rx.itemMoved
-            .map(ContactCommand.moveContact)
+        let insertContactCommand = tableView.rx.itemInserted.map(ContactCommand.insertContact)
 
         let deleteContactCommand = tableView.rx.itemDeleted.map(ContactCommand.deleteContact)
         let initialState = ContactCommandsViewModel(contacts: [], placeholders: [])
@@ -139,7 +147,7 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
             initialState,
             accumulator: ContactCommandsViewModel.executeCommand,
             scheduler: MainScheduler.instance,
-            feedback: { _ in initialLoadCommand }, { _ in deleteContactCommand }, { _ in moveContactCommand } )
+            feedback: { _ in initialLoadCommand }, { _ in deleteContactCommand }, { _ in insertContactCommand } )
             .shareReplay(1)
 
         viewModel
@@ -195,6 +203,11 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
         let dataSource = RxTableViewSectionedReloadDataSource<SectionModel<String, ContactViewModel>>()
 
         dataSource.configureCell = { (_, tv, ip, contact: ContactViewModel) in
+            if ip.section == 1 {
+                let cell = tv.dequeueReusableCell(withIdentifier: "ContactSearchCell") as! ContactSearchCell
+                cell.viewModel = ContactViewModel(contact: Contact(id: nil, first: "", last: "", dob: "", phone: "", zip: 0))
+                return cell
+            }
             let cell = tv.dequeueReusableCell(withIdentifier: "ContactSearchCell") as! ContactSearchCell
             cell.viewModel = contact
             return cell
