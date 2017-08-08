@@ -48,7 +48,8 @@ class ContactEditionViewController : UIViewController {
     var dobEditionViewController : DobEditionViewController? = nil
     
     @IBOutlet weak var updateButton: UIButton!
-    
+    let dateFormatter = DateFormatter()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,7 +63,14 @@ class ContactEditionViewController : UIViewController {
             lastnameTextField.text = contact.last
             phoneTextField.text = contact.phone
             zipTextField.text = "\(contact.zip)"
-            dobTextField.text = contact.dob
+            if contact.dob.characters.count > 0 {
+                dobTextField.text = contact.dob
+            }
+            else {
+                dateFormatter.dateFormat = "YYYY-MM-dd"
+                let strDate = dateFormatter.string(from: Date())
+                dobTextField.text = strDate
+            }
         }
 
         firstnameValidOutlet.text = "Firstname has to be at least \(minimalFirstnameLength) characters"
