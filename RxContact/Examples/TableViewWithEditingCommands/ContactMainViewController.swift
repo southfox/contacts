@@ -15,23 +15,46 @@ struct ContactCommandsViewModel {
     let contacts: [ContactViewModel]
     let placeholders: [ContactViewModel]
 
+    static func sanity(state: ContactCommandsViewModel) -> [[ContactViewModel]] {
+        var all = [state.contacts, state.placeholders]
+        while all[1].count > 0 {
+            if let vm = all[1].popLast(),
+                vm.contact.id != nil
+            {
+                all[0].append(vm)
+            }
+        }
+        return all
+    }
     static func executeCommand(state: ContactCommandsViewModel, _ command: ContactCommand) -> ContactCommandsViewModel {
         switch command {
         case .reloadContacts():
-            return ContactCommandsViewModel(contacts: state.contacts, placeholders: state.placeholders)
+            let all = sanity(state: state)
+            return ContactCommandsViewModel(contacts: all[0], placeholders: all[1])
         case let .setContacts(contacts):
-            return ContactCommandsViewModel(contacts: contacts, placeholders: state.placeholders)
+            var all = sanity(state: state)
+            all[0] = contacts
+            return ContactCommandsViewModel(contacts: all[0], placeholders: all[1])
         case let .setPlaceholders(placeholders):
-            return ContactCommandsViewModel(contacts: state.contacts, placeholders: placeholders)
+            var all = sanity(state: state)
+            all[1] = placeholders
+            return ContactCommandsViewModel(contacts: all[0], placeholders: all[1])
         case .insertContact(_):
-            var all = [state.contacts, state.placeholders]
-            if let contact = all[1].popLast() {
-                all[0].append(contact)
+            var all = sanity(state: state)
+            let cvm = ContactViewModel(contact: Contact(id: nil, first: "", last: "", dob: "", phone: "", zip: 0))
+            all[0].append(cvm)
+            return ContactCommandsViewModel(contacts: all[0], placeholders: all[1])
+
+        case let .insertOnSelectContact(indexPath):
+            var all = sanity(state: state)
+            if indexPath.section == 1 {
+                let cvm = ContactViewModel(contact: Contact(id: nil, first: "", last: "", dob: "", phone: "", zip: 0))
+                all[0].append(cvm)
             }
             return ContactCommandsViewModel(contacts: all[0], placeholders: all[1])
 
         case let .deleteContact(indexPath):
-            var all = [state.contacts, state.placeholders]
+            var all = sanity(state: state)
             let disposeBag = DisposeBag()
             let contact = all[indexPath.section][indexPath.row]
             DefaultContactREST.instance.deleteContact(id: contact.contact.id)
@@ -56,6 +79,7 @@ enum ContactCommand {
     case setPlaceholders(placeholders: [ContactViewModel])
     case deleteContact(indexPath: IndexPath)
     case insertContact(indexPath: IndexPath)
+    case insertOnSelectContact(indexPath: IndexPath)
 }
 
 class ContactMainViewController: UIViewController, UITableViewDelegate {
@@ -69,9 +93,7 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
-        
-    }
+   }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,8 +101,6 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
         tableView.rowHeight = 67
         tableView.hideEmptyCells()
         tableView.allowsSelectionDuringEditing = true
-
-        
         tableView.register(UINib(nibName: "ContactSearchCell", bundle: nil), forCellReuseIdentifier: "ContactSearchCell")
 
         self.navigationItem.rightBarButtonItem = self.editButtonItem
@@ -88,8 +108,17 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
         guard let searchBar = self.searchBar else {
             return
         }
-        searchBar.autocapitalizationType = .none
+        
+        let subject = PublishSubject<String>()
+        subject.on(.next("reload"))
+        
+        subject.subscribe {
+            print($0)
+            }
+            .addDisposableTo(disposeBag)
 
+
+        searchBar.autocapitalizationType = .none
         let REST = DefaultContactREST.instance
 
         let loadContacts = searchBar.rx.text.orEmpty
@@ -98,19 +127,6 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
             .distinctUntilChanged()
             .asObservable()
             .shareReplay(1)
-            .do(onNext: { [weak self] (string) in
-                self?.tableView.reloadData()
-            }, onError: { [weak self] (error) in
-                self?.tableView.reloadData()
-            }, onCompleted: { [weak self] in
-                self?.tableView.reloadData()
-            }, onSubscribe: { [weak self] in
-                self?.tableView.reloadData()
-            }, onSubscribed: { [weak self] in
-                self?.tableView.reloadData()
-            }, onDispose: { [weak self] in
-                self?.tableView.reloadData()
-            })
             .flatMapLatest { query in
                 REST.searchContacts(query)
                     .retry(3)
@@ -123,10 +139,15 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
             }
             .map(ContactCommand.setContacts)
 
-
+        searchBar.rx.searchButtonClicked.subscribe { (event) in
+            print(event)
+        }
+        .disposed(by: disposeBag)
+        
         tableView.rx.contentOffset
             .asDriver()
-            .drive(onNext: { _ in
+            .drive(onNext: { [weak self] _ in
+                self?.tableView.reloadData()
                 if searchBar.isFirstResponder {
                     _ = searchBar.resignFirstResponder()
                 }
@@ -135,19 +156,22 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
         
         let contactViewModel = ContactViewModel(contact: Contact(id: nil, first: "", last: "", dob: "", phone: "", zip: 0))
         
-        let initialLoadCommand = Observable.just(ContactCommand.setPlaceholders(placeholders: [contactViewModel])).concat(loadContacts)
+        let initialState = ContactCommandsViewModel(contacts: [], placeholders: [])
+        
+        let initialLoadCommand = Observable.just(ContactCommand.setPlaceholders(placeholders: [])).concat(loadContacts)
             .observeOn(MainScheduler.instance)
 
         let insertContactCommand = tableView.rx.itemInserted.map(ContactCommand.insertContact)
-
+        
+        let selectContactCommand = tableView.rx.itemSelected.map(ContactCommand.insertOnSelectContact)
+        
         let deleteContactCommand = tableView.rx.itemDeleted.map(ContactCommand.deleteContact)
-        let initialState = ContactCommandsViewModel(contacts: [], placeholders: [])
 
         let viewModel =  Observable.system(
             initialState,
             accumulator: ContactCommandsViewModel.executeCommand,
             scheduler: MainScheduler.instance,
-            feedback: { _ in initialLoadCommand }, { _ in deleteContactCommand }, { _ in insertContactCommand } )
+            feedback: { _ in initialLoadCommand }, { _ in deleteContactCommand }, { _ in selectContactCommand }, { _ in insertContactCommand } )
             .shareReplay(1)
 
         viewModel
@@ -158,16 +182,19 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
                     SectionModel(model: "", items: [contactViewModel])
                 ]
             }
+            .do(onNext: { (smcvm) in
+                print("here")
+            })
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
 
         tableView.rx.itemSelected
             .withLatestFrom(viewModel) { i, viewModel in
+                let all = viewModel.contacts
                 if i.section == 1 {
-                    return ContactViewModel(contact: Contact(id: nil, first: "", last: "", dob: "", phone: "", zip: 0))
+                    return all.last
                 }
-                let all = [viewModel.contacts]
-                return all[i.section][i.row]
+                return all[i.row]
             }
             .subscribe(onNext: { [weak self] contact in
                 self?.showEditionForContact(contact)
@@ -176,7 +203,8 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
 
         tableView.rx.itemInserted
             .withLatestFrom(viewModel) { i, viewModel in
-                return ContactViewModel(contact: Contact(id: nil, first: "", last: "", dob: "", phone: "", zip: 0))
+                let all = viewModel.contacts
+                return all.last
             }
             .subscribe(onNext: { [weak self] contact in
                 self?.showEditionForContact(contact)
@@ -201,13 +229,8 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
 
     static func configureDataSource() -> RxTableViewSectionedReloadDataSource<SectionModel<String, ContactViewModel>> {
         let dataSource = RxTableViewSectionedReloadDataSource<SectionModel<String, ContactViewModel>>()
-
-        dataSource.configureCell = { (_, tv, ip, contact: ContactViewModel) in
-            if ip.section == 1 {
-                let cell = tv.dequeueReusableCell(withIdentifier: "ContactSearchCell") as! ContactSearchCell
-                cell.viewModel = ContactViewModel(contact: Contact(id: nil, first: "", last: "", dob: "", phone: "", zip: 0))
-                return cell
-            }
+        
+            dataSource.configureCell = { (_, tv, ip, contact: ContactViewModel) in
             let cell = tv.dequeueReusableCell(withIdentifier: "ContactSearchCell") as! ContactSearchCell
             cell.viewModel = contact
             return cell
@@ -238,6 +261,9 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let viewController = segue.destination as? ContactEditionViewController {
             viewController.viewModel = sender as? ContactViewModel
+//            viewController.updateBlock = {
+////                viewController.viewModel?.contact
+//            }
         }
     }
     

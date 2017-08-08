@@ -19,6 +19,8 @@ let minimalDobLength = (2+1+2+1+4)
 
 class ContactEditionViewController : UIViewController {
     
+    var updateBlock : ((Void) -> Void)?
+
     var disposeBag: DisposeBag?
     
     var viewModel: ContactViewModel? {
@@ -187,7 +189,7 @@ class ContactEditionViewController : UIViewController {
             alertView.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in
                 self.navigationController?.popViewController(animated: true)
             })
-            rootViewController().present(alertView, animated: true, completion: nil)
+            rootViewController().present(alertView, animated: true, completion: updateBlock)
     }
 
     func rootViewController() -> UIViewController {

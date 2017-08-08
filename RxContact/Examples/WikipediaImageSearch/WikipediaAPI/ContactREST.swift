@@ -92,10 +92,17 @@ class DefaultContactREST: ContactREST {
                     observer.on(.error(RxCocoaError.unknown))
                     return
                 }
-                // TODO: httpResponse.statusCode >= 200 <300
-                print(httpResponse)
-                print(data.count)
-                observer.on(.next(ContactResult(response: response, data: data, error: error)))
+
+                if 200 ..< 300 ~= httpResponse.statusCode {
+                    print(httpResponse)
+                    print(data.count)
+                    observer.on(.next(ContactResult(response: response, data: data, error: error)))
+                    observer.onCompleted()
+                }
+                else {
+                    observer.on(.error(apiError(httpResponse.statusCode, desc: "bad status code")))
+                    
+                }
             }
             task.resume()
             

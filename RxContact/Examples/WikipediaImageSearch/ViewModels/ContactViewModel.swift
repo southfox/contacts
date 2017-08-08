@@ -27,7 +27,6 @@ class ContactViewModel {
     var title: Driver<String>
     var secondTitle: Driver<String>
 
-    let REST = DefaultContactREST.instance
     let $: Factory = Factory.instance
 
     init(contact: Contact) {
