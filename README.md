@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This POC works with RxSwift doing a Contacts CRUD app for iOS (universal), macOS, watchOS and tvOS.
+This POC works with RxSwift doing a Contacts CRUD app for iOS.
 
 ## Using firebase
 
