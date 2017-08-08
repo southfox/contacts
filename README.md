@@ -4,6 +4,14 @@
 
 _This POC works with RxSwift doing a Contacts CRUD app for iOS._
 
+## How to build the iOS App.
+
+```bash
+git clone https://github.com/southfox/contacts.git
+pod install
+open RxContact.xcworkspace
+```
+
 ## Using firebase
 
 _Firebase is the repository of data, there's no reason to use firebase api here, just for the poc we can do a simple URLSession to get and put information using json like:_
