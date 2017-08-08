@@ -2,29 +2,27 @@
 
 ## Purpose
 
-This POC works with RxSwift doing a Contacts CRUD app for iOS.
+_This POC works with RxSwift doing a Contacts CRUD app for iOS._
 
 ## Using firebase
 
-Firebase is the repository of data, there's no reason to use firebase api here, just for the poc we can do a simple URLSession to get and put information using json like:
+_Firebase is the repository of data, there's no reason to use firebase api here, just for the poc we can do a simple URLSession to get and put information using json like:_
 
 ```json
 {
-    "all" : {
-        "KqesW2LmWt8qo6ymbmh": {
-            "last": "Smith",
-            "first": "John",
-            "dob": "1980-01-01",
-            "phone": "33341955",
-            "zip": 8400
-        },
-        "xxxxxxxxxxxxxxxxxxx": {
-            "first": "Jane",
-            "last": "Doe",
-            "dob": "1990-11-01",
-            "phone": "335123455",
-            "zip": 8540
-        }
+    "KqesW2LmWt8qo6ymbmh": {
+        "last": "Smith",
+        "first": "John",
+        "dob": "1980-01-01",
+        "phone": "33341955",
+        "zip": 8400
+    },
+    "xxxxxxxxxxxxxxxxxxx": {
+        "first": "Jane",
+        "last": "Doe",
+        "dob": "1990-11-01",
+        "phone": "335123455",
+        "zip": 8540
     }
 }
 
@@ -32,42 +30,49 @@ Firebase is the repository of data, there's no reason to use firebase api here, 
 
 ### Get all the contacts
 
-```
+_Using Reactive programming getting all the contact information in a table view:_
+
+Screen shoot: [this](screenshots/main.png)
+
+#### Rest:
+```bash
 curl 'https://contacts-4c754.firebaseio.com/.json'
 ```
 
 
 ### Add info
 
+Screen shoot: [this](screenshots/contactadd.png)
+
+#### Rest:
+
 ```
 curl -X POST -d '{ "first": "Lio", "last": "Messi", "dob": "1913-01-01", "phone": "11132345", "zip": 3345, "url": ["http://the-toast.net/wp-content/uploads/2016/05/rocky-mountain-high-a-john-denver-tribute-show-detail.jpg"]  }' https://contacts-4c754.firebaseio.com/.json
 ```
 
-### Get information about John Wayne:
 
 
-```
-curl https://contacts-4c754.firebaseio.com/-KqesW2LmWt8qo6ymbmh.json
-```
+### Change info about a contact
 
+Screen shoot: [this](screenshots/contactedition.png)
 
-### Change info about John Wayne
+#### Rest:
 
 ```
 curl -X PATCH -d '{ "dob": "1982-02-02" }' https://contacts-4c754.firebaseio.com/-KqesW2LmWt8qo6ymbmh.json
 ```
 
-### Delete John Wayne
+### Delete a contact
 
+Screen shoot: [this](screenshots/contactdelete.png)
+
+#### Rest:
 ```
 curl -X DELETE https://contacts-4c754.firebaseio.com/-KqesW2LmWt8qo6ymbmh.json
 ```
 
-### Search by names = John
-
-```
-curl 'https://contacts-4c754.firebaseio.com/.json?orderBy="first"&equalTo="John"'
-```
+### Search by first/last names
+Screen shoot: [this](screenshots/contactedition.png)
 
 ## Authentication
 
