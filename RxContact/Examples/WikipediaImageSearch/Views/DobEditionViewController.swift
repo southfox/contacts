@@ -33,6 +33,10 @@ class DobEditionViewController : UIViewController {
        }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        view.endEditing(true)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         

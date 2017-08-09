@@ -93,10 +93,20 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-   }
+        hideKeyboard()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        hideKeyboard()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
 
         tableView.rowHeight = 67
         tableView.hideEmptyCells()
@@ -219,6 +229,7 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
         super.setEditing(editing, animated: animated)
         tableView.isEditing = editing
         tableView.reloadData()
+        hideKeyboard()
     }
     
     private func showEditionForContact(_ contact: ContactViewModel? = nil) {
@@ -261,12 +272,13 @@ class ContactMainViewController: UIViewController, UITableViewDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let viewController = segue.destination as? ContactEditionViewController {
             viewController.viewModel = sender as? ContactViewModel
-//            viewController.updateBlock = {
-////                viewController.viewModel?.contact
-//            }
         }
     }
     
+    func hideKeyboard() {
+        view.endEditing(true)
+    }
+
     
     
 }

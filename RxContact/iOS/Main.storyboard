@@ -96,6 +96,9 @@
                                 <rect key="frame" x="16" y="10" width="343" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="nkT-Pv-oMA" id="KKP-Jj-96S"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emd-Jj-txB">
                                 <rect key="frame" x="16" y="40" width="343" height="14"/>
@@ -107,6 +110,9 @@
                                 <rect key="frame" x="16" y="60" width="343" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="nkT-Pv-oMA" id="fGo-4O-o2A"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="anv-vb-PAm">
                                 <rect key="frame" x="16" y="90" width="343" height="14"/>
@@ -118,6 +124,9 @@
                                 <rect key="frame" x="16" y="110" width="343" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="phonePad"/>
+                                <connections>
+                                    <outlet property="delegate" destination="nkT-Pv-oMA" id="0Og-Kd-fLx"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QZ3-kj-KZS">
                                 <rect key="frame" x="16" y="140" width="343" height="14"/>
@@ -129,6 +138,9 @@
                                 <rect key="frame" x="16" y="160" width="343" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="phonePad"/>
+                                <connections>
+                                    <outlet property="delegate" destination="nkT-Pv-oMA" id="4qq-3n-1M2"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFm-rm-SMb">
                                 <rect key="frame" x="16" y="190" width="343" height="14"/>
@@ -136,11 +148,21 @@
                                 <color key="textColor" red="0.98726278540000001" green="0.23694899680000001" blue="0.26975026730000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please enter dob" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QeM-a7-eJi">
+                            <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please enter dob" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QeM-a7-eJi">
                                 <rect key="frame" x="16" y="210" width="343" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="phonePad"/>
+                                <connections>
+                                    <outlet property="delegate" destination="nkT-Pv-oMA" id="669-QL-2Wx"/>
+                                </connections>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWa-ZO-wH8">
+                                <rect key="frame" x="15.5" y="210" width="343" height="30"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <action selector="showDobContainer" destination="nkT-Pv-oMA" eventType="touchUpInside" id="qhM-Or-VQ8"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qgs-sa-Jpy">
                                 <rect key="frame" x="16" y="240" width="343" height="14"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -185,8 +207,10 @@
                             <constraint firstItem="qgs-sa-Jpy" firstAttribute="top" secondItem="QeM-a7-eJi" secondAttribute="bottom" id="Ghh-id-mlH"/>
                             <constraint firstAttribute="trailingMargin" secondItem="anv-vb-PAm" secondAttribute="trailing" id="I8U-x9-vdQ"/>
                             <constraint firstItem="emd-Jj-txB" firstAttribute="top" secondItem="TTA-Z2-YXv" secondAttribute="bottom" id="Js5-py-wvy"/>
+                            <constraint firstItem="YWa-ZO-wH8" firstAttribute="width" secondItem="QeM-a7-eJi" secondAttribute="width" id="KtC-Jr-KO4"/>
                             <constraint firstAttribute="leadingMargin" secondItem="qgs-sa-Jpy" secondAttribute="leading" id="M19-Yv-0nY"/>
                             <constraint firstItem="Bqa-W8-rPG" firstAttribute="centerY" secondItem="FXE-BK-xns" secondAttribute="centerY" id="Qe3-YL-NsN"/>
+                            <constraint firstItem="YWa-ZO-wH8" firstAttribute="centerX" secondItem="QeM-a7-eJi" secondAttribute="centerX" id="Qp0-GE-AcX"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Mk5-EE-6MV" secondAttribute="trailing" id="RFI-ul-9yM"/>
                             <constraint firstItem="qgs-sa-Jpy" firstAttribute="height" secondItem="hFm-rm-SMb" secondAttribute="height" id="RcV-AF-gwe"/>
                             <constraint firstItem="anv-vb-PAm" firstAttribute="top" secondItem="huc-D1-qJf" secondAttribute="bottom" id="SFX-J7-R7X"/>
@@ -202,9 +226,11 @@
                             <constraint firstItem="hFm-rm-SMb" firstAttribute="width" secondItem="QZ3-kj-KZS" secondAttribute="width" id="cGv-S4-oDu"/>
                             <constraint firstAttribute="trailingMargin" secondItem="NmH-nN-jiq" secondAttribute="trailing" id="dF6-iM-G2B"/>
                             <constraint firstAttribute="trailingMargin" secondItem="hFm-rm-SMb" secondAttribute="trailing" id="daZ-mg-MC6"/>
+                            <constraint firstItem="YWa-ZO-wH8" firstAttribute="height" secondItem="QeM-a7-eJi" secondAttribute="height" id="fbT-Um-eO5"/>
                             <constraint firstItem="Bqa-W8-rPG" firstAttribute="height" secondItem="FXE-BK-xns" secondAttribute="height" id="fpl-aR-Llx"/>
                             <constraint firstItem="QZ3-kj-KZS" firstAttribute="top" secondItem="Mk5-EE-6MV" secondAttribute="bottom" id="gNX-Cd-G3N"/>
                             <constraint firstItem="NmH-nN-jiq" firstAttribute="height" secondItem="Mk5-EE-6MV" secondAttribute="height" id="hVE-NP-31P"/>
+                            <constraint firstItem="YWa-ZO-wH8" firstAttribute="top" secondItem="QeM-a7-eJi" secondAttribute="top" id="iNL-Oq-UQ0"/>
                             <constraint firstAttribute="leadingMargin" secondItem="NmH-nN-jiq" secondAttribute="leading" id="iiE-26-Xye"/>
                             <constraint firstItem="QeM-a7-eJi" firstAttribute="width" secondItem="NmH-nN-jiq" secondAttribute="width" id="ijs-rn-bae"/>
                             <constraint firstItem="huc-D1-qJf" firstAttribute="centerX" secondItem="TTA-Z2-YXv" secondAttribute="centerX" id="jC6-Ga-bUe"/>
@@ -260,7 +286,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please enter dob" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="95B-3P-RhO">
+                            <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please enter dob" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="95B-3P-RhO">
                                 <rect key="frame" x="16" y="43" width="343" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="i4H-cq-faq"/>
@@ -317,6 +343,7 @@
                             <constraint firstItem="moD-5O-Orj" firstAttribute="width" secondItem="A69-cu-0dg" secondAttribute="width" id="uxf-vc-JGh"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="L67-nH-8zB"/>
                     <connections>
                         <outlet property="cancelButton" destination="apr-f4-l4E" id="LOo-td-lYr"/>
                         <outlet property="datePicker" destination="moD-5O-Orj" id="1Io-Bg-ovU"/>

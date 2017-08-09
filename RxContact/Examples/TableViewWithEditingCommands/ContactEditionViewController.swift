@@ -17,7 +17,7 @@ let minimalPhoneLength = 5
 let minimalZipLength = 2
 let minimalDobLength = (2+1+2+1+4)
 
-class ContactEditionViewController : UIViewController {
+class ContactEditionViewController : UIViewController, UITextFieldDelegate {
     
     var updateBlock : ((Void) -> Void)?
 
@@ -53,6 +53,10 @@ class ContactEditionViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+
         guard let disposeBag = disposeBag else {
             return
         }
@@ -99,14 +103,15 @@ class ContactEditionViewController : UIViewController {
             .map { $0.characters.count >= minimalDobLength }
             .shareReplay(1)
         
-        dobTextField.rx.controlEvent(.editingDidBegin)
+        fistnameTextField.rx.controlEvent(.editingDidEnd)
             .shareReplay(1)
             .asObservable()
             .subscribe { [weak self] (event) in
-                self?.showDobContainer()
+                self?.view.endEditing(true)
+                self?.fistnameTextField.resignFirstResponder()
             }
             .disposed(by: disposeBag)
-        
+                
 
         let everythingValid = Observable.combineLatest(firstnameValid, lastnameValid, phoneValid, zipValid, dobValid) { $0 && $1 && $2 && $3 && $4}
             .shareReplay(1)
@@ -140,7 +145,13 @@ class ContactEditionViewController : UIViewController {
             .disposed(by: disposeBag)
     }
     
-    func showDobContainer() {
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        hideKeyboard()
+    }
+
+    @IBAction func showDobContainer() {
+        hideKeyboard()
         dobContainer.isHidden = false
         if let dobEditionViewController = dobEditionViewController {
             dobEditionViewController.dob = dobTextField.text
@@ -213,11 +224,16 @@ class ContactEditionViewController : UIViewController {
                 if let date = date {
                     self?.dobTextField.text = date
                 }
+                self?.hideKeyboard()
                 self?.dobContainer.isHidden = true
             }
             dobEditionViewController = viewController
+            hideKeyboard()
         }
     }
 
-    
+    func hideKeyboard() {
+        view.endEditing(true)
+    }
+
 }
