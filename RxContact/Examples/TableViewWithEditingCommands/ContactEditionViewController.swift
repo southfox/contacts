@@ -17,9 +17,11 @@ let minimalPhoneLength = 5
 let minimalZipLength = 2
 let minimalDobLength = (2+1+2+1+4)
 
-class ContactEditionViewController : UIViewController {
+class ContactEditionViewController : UIViewController, UITextFieldDelegate {
     
-    var updateBlock : ((Void) -> Void)?
+    var updateBlock : ((ContactViewModel) -> Void)?
+    
+    var isUpdate : Bool = false
 
     var disposeBag: DisposeBag?
     
@@ -48,10 +50,15 @@ class ContactEditionViewController : UIViewController {
     var dobEditionViewController : DobEditionViewController? = nil
     
     @IBOutlet weak var updateButton: UIButton!
-    
+    let dateFormatter = DateFormatter()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+
         guard let disposeBag = disposeBag else {
             return
         }
@@ -62,7 +69,14 @@ class ContactEditionViewController : UIViewController {
             lastnameTextField.text = contact.last
             phoneTextField.text = contact.phone
             zipTextField.text = "\(contact.zip)"
-            dobTextField.text = contact.dob
+            if contact.dob.characters.count > 0 {
+                dobTextField.text = contact.dob
+            }
+            else {
+                dateFormatter.dateFormat = "YYYY-MM-dd"
+                let strDate = dateFormatter.string(from: Date())
+                dobTextField.text = strDate
+            }
         }
 
         firstnameValidOutlet.text = "Firstname has to be at least \(minimalFirstnameLength) characters"
@@ -91,14 +105,15 @@ class ContactEditionViewController : UIViewController {
             .map { $0.characters.count >= minimalDobLength }
             .shareReplay(1)
         
-        dobTextField.rx.controlEvent(.editingDidBegin)
+        fistnameTextField.rx.controlEvent(.editingDidEnd)
             .shareReplay(1)
             .asObservable()
             .subscribe { [weak self] (event) in
-                self?.showDobContainer()
+                self?.view.endEditing(true)
+                self?.fistnameTextField.resignFirstResponder()
             }
             .disposed(by: disposeBag)
-        
+                
 
         let everythingValid = Observable.combineLatest(firstnameValid, lastnameValid, phoneValid, zipValid, dobValid) { $0 && $1 && $2 && $3 && $4}
             .shareReplay(1)
@@ -132,7 +147,13 @@ class ContactEditionViewController : UIViewController {
             .disposed(by: disposeBag)
     }
     
-    func showDobContainer() {
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        hideKeyboard()
+    }
+
+    @IBAction func showDobContainer() {
+        hideKeyboard()
         dobContainer.isHidden = false
         if let dobEditionViewController = dobEditionViewController {
             dobEditionViewController.dob = dobTextField.text
@@ -144,6 +165,7 @@ class ContactEditionViewController : UIViewController {
             let disposeBag = disposeBag else { return }
         var contact = Contact(id: viewModel.contact.id, first:fistnameTextField.text!, last: lastnameTextField.text!, dob: dobTextField.text!, phone: phoneTextField.text!, zip: Int(zipTextField.text!)!)
         if contact.id != nil {
+            isUpdate = true
             DefaultContactREST.instance.updateContact(contact)
                 .retry(3)
                 .retryOnBecomesReachable(false, reachabilityService: Factory.instance.reachabilityService)
@@ -158,6 +180,7 @@ class ContactEditionViewController : UIViewController {
                 .disposed(by: disposeBag)
         }
         else {
+            isUpdate = false
             DefaultContactREST.instance.createContact(contact)
                 .retry(3)
                 .retryOnBecomesReachable("", reachabilityService: Factory.instance.reachabilityService)
@@ -189,7 +212,15 @@ class ContactEditionViewController : UIViewController {
             alertView.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in
                 self.navigationController?.popViewController(animated: true)
             })
-            rootViewController().present(alertView, animated: true, completion: updateBlock)
+        rootViewController().present(alertView, animated: true, completion: {
+            [weak self] in
+            if let updateBlock = self?.updateBlock,
+                let viewModel = self?.viewModel,
+                let isUpdate = self?.isUpdate,
+                isUpdate == false {
+                updateBlock(viewModel)
+            }
+        })
     }
 
     func rootViewController() -> UIViewController {
@@ -205,11 +236,16 @@ class ContactEditionViewController : UIViewController {
                 if let date = date {
                     self?.dobTextField.text = date
                 }
+                self?.hideKeyboard()
                 self?.dobContainer.isHidden = true
             }
             dobEditionViewController = viewController
+            hideKeyboard()
         }
     }
 
-    
+    func hideKeyboard() {
+        view.endEditing(true)
+    }
+
 }
