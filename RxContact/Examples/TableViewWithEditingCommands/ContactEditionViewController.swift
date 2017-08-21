@@ -19,7 +19,7 @@ let minimalDobLength = (2+1+2+1+4)
 
 class ContactEditionViewController : UIViewController, UITextFieldDelegate {
     
-    var updateBlock : ((Void) -> Void)?
+    var updateBlock : ((ContactViewModel) -> Void)?
 
     var disposeBag: DisposeBag?
     
@@ -208,7 +208,13 @@ class ContactEditionViewController : UIViewController, UITextFieldDelegate {
             alertView.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in
                 self.navigationController?.popViewController(animated: true)
             })
-            rootViewController().present(alertView, animated: true, completion: updateBlock)
+        rootViewController().present(alertView, animated: true, completion: {
+            [weak self] in
+            if let updateBlock = self?.updateBlock,
+                let viewModel = self?.viewModel {
+                updateBlock(viewModel)
+            }
+        })
     }
 
     func rootViewController() -> UIViewController {
