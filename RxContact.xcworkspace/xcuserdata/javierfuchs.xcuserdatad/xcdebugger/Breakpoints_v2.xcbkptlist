@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RxContact/Examples/TableViewWithEditingCommands/ContactMainViewController.swift"
+            timestampString = "524965392.644518"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "ContactCommand"
+            landmarkType = "13">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RxContact/Examples/TableViewWithEditingCommands/ContactMainViewController.swift"
+            timestampString = "524966556.062687"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "228"
+            endingLineNumber = "228"
+            landmarkName = "configureDataSource()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RxContact/Examples/TableViewWithEditingCommands/ContactMainViewController.swift"
+            timestampString = "524966039.540732"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSContact.ContactMainViewController.channelForNewContacts.getter : RxSwift.PublishSubject&lt;iOSContact.Contact&gt;"
+                  moduleName = "iOSContact"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javierfuchs/Job/southfox/contacts/RxContact/Examples/TableViewWithEditingCommands/ContactMainViewController.swift"
+                  timestampString = "524966732.304962"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "111"
+                  endingLineNumber = "111"
+                  offsetFromSymbolStart = "35">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSContact.ContactMainViewController.channelForNewContacts.setter : RxSwift.PublishSubject&lt;iOSContact.Contact&gt;"
+                  moduleName = "iOSContact"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javierfuchs/Job/southfox/contacts/RxContact/Examples/TableViewWithEditingCommands/ContactMainViewController.swift"
+                  timestampString = "524966732.306301"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "111"
+                  endingLineNumber = "111"
+                  offsetFromSymbolStart = "63">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSContact.ContactMainViewController.init (nibName : Swift.Optional&lt;Swift.String&gt;, bundle : Swift.Optional&lt;__ObjC.Bundle&gt;) -&gt; iOSContact.ContactMainViewController"
+                  moduleName = "iOSContact"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javierfuchs/Job/southfox/contacts/RxContact/Examples/TableViewWithEditingCommands/ContactMainViewController.swift"
+                  timestampString = "524966732.307581"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "111"
+                  endingLineNumber = "111"
+                  offsetFromSymbolStart = "223">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSContact.ContactMainViewController.init (coder : __ObjC.NSCoder) -&gt; Swift.Optional&lt;iOSContact.ContactMainViewController&gt;"
+                  moduleName = "iOSContact"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javierfuchs/Job/southfox/contacts/RxContact/Examples/TableViewWithEditingCommands/ContactMainViewController.swift"
+                  timestampString = "524966732.309169"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "111"
+                  endingLineNumber = "111"
+                  offsetFromSymbolStart = "154">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RxContact/Examples/WikipediaImageSearch/WikipediaAPI/ContactREST.swift"
+            timestampString = "524966114.052448"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
+            landmarkName = "createContact(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RxContact/Examples/TableViewWithEditingCommands/ContactEditionViewController.swift"
+            timestampString = "524969355.824971"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "164"
+            endingLineNumber = "164"
+            landmarkName = "updateContact()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSContact.ContactEditionViewController.updateContact () -&gt; ()"
+                  moduleName = "iOSContact"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javierfuchs/Job/southfox/contacts/RxContact/Examples/TableViewWithEditingCommands/ContactEditionViewController.swift"
+                  timestampString = "524967333.86223"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "162"
+                  endingLineNumber = "162"
+                  offsetFromSymbolStart = "31">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSContact.ContactEditionViewController.updateContact () -&gt; ()"
+                  moduleName = "iOSContact"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javierfuchs/Job/southfox/contacts/RxContact/Examples/TableViewWithEditingCommands/ContactEditionViewController.swift"
+                  timestampString = "524967333.863512"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "162"
+                  endingLineNumber = "162"
+                  offsetFromSymbolStart = "79">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RxContact/Examples/TableViewWithEditingCommands/ContactEditionViewController.swift"
+            timestampString = "524969355.824971"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "updateContact()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSContact.ContactEditionViewController.updateContact () -&gt; ()"
+                  moduleName = "iOSContact"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javierfuchs/Job/southfox/contacts/RxContact/Examples/TableViewWithEditingCommands/ContactEditionViewController.swift"
+                  timestampString = "524967333.866261"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "170"
+                  endingLineNumber = "170"
+                  offsetFromSymbolStart = "5451">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSContact.ContactEditionViewController.(updateContact () -&gt; ()).(closure #1)"
+                  moduleName = "iOSContact"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javierfuchs/Job/southfox/contacts/RxContact/Examples/TableViewWithEditingCommands/ContactEditionViewController.swift"
+                  timestampString = "524967333.867393"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "170"
+                  endingLineNumber = "170"
+                  offsetFromSymbolStart = "42">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RxContact/Examples/TableViewWithEditingCommands/ContactEditionViewController.swift"
+            timestampString = "524969355.824971"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
+            landmarkName = "presentAlert(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSContact.ContactEditionViewController.(presentAlert (Swift.String) -&gt; ()).(closure #2)"
+                  moduleName = "iOSContact"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javierfuchs/Job/southfox/contacts/RxContact/Examples/TableViewWithEditingCommands/ContactEditionViewController.swift"
+                  timestampString = "524967333.870251"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "213"
+                  endingLineNumber = "213"
+                  offsetFromSymbolStart = "22">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "iOSContact.ContactEditionViewController.(presentAlert (Swift.String) -&gt; ()).(closure #2)"
+                  moduleName = "iOSContact"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/javierfuchs/Job/southfox/contacts/RxContact/Examples/TableViewWithEditingCommands/ContactEditionViewController.swift"
+                  timestampString = "524967333.871489"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "213"
+                  endingLineNumber = "213"
+                  offsetFromSymbolStart = "203">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RxContact/Examples/TableViewWithEditingCommands/ContactMainViewController.swift"
+            timestampString = "524967250.41022"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "308"
+            endingLineNumber = "308">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
