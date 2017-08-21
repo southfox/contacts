@@ -20,6 +20,8 @@ let minimalDobLength = (2+1+2+1+4)
 class ContactEditionViewController : UIViewController, UITextFieldDelegate {
     
     var updateBlock : ((ContactViewModel) -> Void)?
+    
+    var isUpdate : Bool = false
 
     var disposeBag: DisposeBag?
     
@@ -163,6 +165,7 @@ class ContactEditionViewController : UIViewController, UITextFieldDelegate {
             let disposeBag = disposeBag else { return }
         var contact = Contact(id: viewModel.contact.id, first:fistnameTextField.text!, last: lastnameTextField.text!, dob: dobTextField.text!, phone: phoneTextField.text!, zip: Int(zipTextField.text!)!)
         if contact.id != nil {
+            isUpdate = true
             DefaultContactREST.instance.updateContact(contact)
                 .retry(3)
                 .retryOnBecomesReachable(false, reachabilityService: Factory.instance.reachabilityService)
@@ -177,6 +180,7 @@ class ContactEditionViewController : UIViewController, UITextFieldDelegate {
                 .disposed(by: disposeBag)
         }
         else {
+            isUpdate = false
             DefaultContactREST.instance.createContact(contact)
                 .retry(3)
                 .retryOnBecomesReachable("", reachabilityService: Factory.instance.reachabilityService)
@@ -211,7 +215,9 @@ class ContactEditionViewController : UIViewController, UITextFieldDelegate {
         rootViewController().present(alertView, animated: true, completion: {
             [weak self] in
             if let updateBlock = self?.updateBlock,
-                let viewModel = self?.viewModel {
+                let viewModel = self?.viewModel,
+                let isUpdate = self?.isUpdate,
+                isUpdate == false {
                 updateBlock(viewModel)
             }
         })
